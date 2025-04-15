@@ -3,7 +3,7 @@ import { Fragment } from "react"
 import { Menu, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { useNavigate, useParams } from "react-router-dom"
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteTask } from "@/api/TasAPI"
 import { toast } from "react-toastify"
 
@@ -18,6 +18,7 @@ export default function TaskCard({ task }: TaskCardProps) {
     const params = useParams()
     const projectId = params.projectId!
 
+    const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: deleteTask,
         onError: (error) => {
@@ -25,6 +26,7 @@ export default function TaskCard({ task }: TaskCardProps) {
         },
         onSuccess: (data) => {
             toast.success(data)
+            queryClient.invalidateQueries({ queryKey: ['project', projectId] })
         }
     })
 
@@ -55,14 +57,16 @@ export default function TaskCard({ task }: TaskCardProps) {
                             <Menu.Item>
                                 <button
                                     type='button'
-                                    onClick={() => navigate(location.pathname + `?editTask=${task._id}`)}
+                                    onClick={() => navigate(location.pathname + `?viewTask=${task._id}`)}
                                     className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                     Ver Tarea
                                 </button>
                             </Menu.Item>
                             <Menu.Item>
                                 <button
-                                    type='button' className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                                    type='button' 
+                                    onClick={() => navigate(location.pathname + `?editTask=${task._id}`)}
+                                    className='block px-3 py-1 text-sm leading-6 text-gray-900'>
                                     Editar Tarea
                                 </button>
                             </Menu.Item>
