@@ -44,14 +44,12 @@ export default function AddTaskModal() {
             navigate(location.pathname, { replace: true })
         }
     })
-    const handleCreateTask = (formData: TaskFormData) => {
-        const data = {
-            formData,
-            projectId
-        }
 
+    const handleCreateTask = (formData: TaskFormData) => {
+        const data = { formData, projectId }
         mutate(data)
     }
+    
     return (
         <>
             <Transition appear show={show} as={Fragment}>

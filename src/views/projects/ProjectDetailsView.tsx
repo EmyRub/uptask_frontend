@@ -21,6 +21,7 @@ export default function ProjectDetailsView() {
 
     if (isLoading) return 'Cargando...'
     if (isError) return <Navigate to='/404' />
+
     if (data) return (
         <>
             <h1 className="text-5xl font-black">{data.projectName}</h1>
@@ -30,16 +31,13 @@ export default function ProjectDetailsView() {
                 <button
                     type="button"
                     onClick={() => navigate('?newTask=true')}
-                    className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors">Agregar tarea</button>
+                    className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors mt-3">Agregar tarea</button>
             </nav>
-           
-            <TaskList
-                tasks={data.task}
-            />
-            
+
+            <TaskList tasks={data.tasks} />
             <AddTaskModal />
-            <EditTaskData/>
-            <TaskModalDetails/>
+            <EditTaskData />
+            <TaskModalDetails />
         </>
     )
 
