@@ -1,12 +1,11 @@
-import { Task } from "@/types/index"
 import { Fragment } from "react"
+import { Task } from "@/types/index"
 import { Menu, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { useNavigate, useParams } from "react-router-dom"
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteTask } from "@/api/TasAPI"
 import { toast } from "react-toastify"
-
 
 type TaskCardProps = {
     task: Task
@@ -32,7 +31,7 @@ export default function TaskCard({ task }: TaskCardProps) {
 
 
     return (
-        <li className="p-5 bg-white border-slate-300 flex justify-between gap-3">
+        <li className="p-5 bg-white border border-slate-300 flex justify-between gap-3">
 
             <div className="min-w-0 flex flex-col gap-y-4">
                 <button
