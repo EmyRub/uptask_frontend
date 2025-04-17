@@ -4,7 +4,7 @@ import { Menu, Transition } from "@headlessui/react"
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
 import { useNavigate, useParams } from "react-router-dom"
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteTask } from "@/api/TasAPI"
+import { deleteTask } from "@/api/TaskAPI"
 import { toast } from "react-toastify"
 
 type TaskCardProps = {

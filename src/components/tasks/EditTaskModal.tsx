@@ -5,7 +5,7 @@ import { Task, TaskFormData } from '@/types/index';
 import { useForm } from 'react-hook-form';
 import TaskForm from './TaskForm';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateTask } from '@/api/TasAPI';
+import { updateTask } from '@/api/TaskAPI';
 import { toast } from 'react-toastify';
 
 

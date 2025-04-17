@@ -1,4 +1,4 @@
-import { getTaskById } from "@/api/TasAPI"
+import { getTaskById } from "@/api/TaskAPI"
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, useLocation, useParams } from "react-router-dom"
 import EditTaskModal from "./EditTaskModal"

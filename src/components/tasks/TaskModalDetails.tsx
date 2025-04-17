@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { toast } from 'react-toastify';
-import { getTaskById, updateStatus } from '@/api/TasAPI';
+import { getTaskById, updateStatus } from '@/api/TaskAPI';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Dialog, Transition } from '@headlessui/react';
 import { useLocation, useNavigate, useParams, Navigate } from 'react-router-dom';
@@ -13,12 +13,12 @@ import { TaskStatus } from '@/types/index';
 export default function TaskModalDetails() {
 
     const params = useParams()
-    const projectId = params.projectid!
+    const projectId = params.projectId!
 
     const navigate = useNavigate()
     const location = useLocation()
     const queryParams = new URLSearchParams(location.search)
-    const taskId = queryParams.get('viewtask')!
+    const taskId = queryParams.get('viewTask')!
     const show = taskId ? true : false
 
     const { data, isError, error } = useQuery({
@@ -31,9 +31,11 @@ export default function TaskModalDetails() {
     const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: updateStatus,
+     
         onError: (error) => {
             toast.error(error.message)
         },
+      
         onSuccess: (data) => {
             toast.success(data)
             queryClient.invalidateQueries({ queryKey: ['project', projectId] })
