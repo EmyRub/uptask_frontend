@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { ForgotPasswordForm } from "../../types";
 import ErrorMessage from "@/components/ErrorMessage";
+import { useMutation } from "@tanstack/react-query";
+import { forgotPassword } from "@/api/AuthAPI";
+import { toast } from "react-toastify";
 
 export default function ForgotPasswordView() {
   const initialValues: ForgotPasswordForm = {
@@ -9,7 +12,17 @@ export default function ForgotPasswordView() {
   }
   const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
 
-  const handleForgotPassword = (formData: ForgotPasswordForm) => { }
+  const { mutate } = useMutation({
+    mutationFn: forgotPassword,
+    onError: (error) => {
+      toast.error(error.message)
+    }, onSuccess: (data) => {
+      toast.success(data)
+      reset()
+    }
+  })
+
+  const handleForgotPassword = (formData: ForgotPasswordForm) => mutate(formData)
 
 
   return (
@@ -19,7 +32,7 @@ export default function ForgotPasswordView() {
         ¿Olvidaste tu password? Coloca tu email{''}
         <span className=" text-fuchsia-500 font-bold"> y reestablece tu password</span>
       </p>
-     
+
       <form
         onSubmit={handleSubmit(handleForgotPassword)}
         className="space-y-8 p-10 mt-10 bg-white"
