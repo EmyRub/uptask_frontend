@@ -32,20 +32,6 @@ export async function confirmAccount(formData: ConfirmToken) {
     }
 }
 
-export async function requestConfirmationCode(formData: RequestConfirmationCodeForm) {
-
-    try {
-        const url = '/auth/request-code'
-        const { data } = await api.post<string>(url, formData)
-        return data
-
-    } catch (error) {
-        if (isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.error)
-        }
-    }
-}
-
 export async function authenticateUser(formData: UserLoginForm) {
 
     try {
@@ -60,6 +46,38 @@ export async function authenticateUser(formData: UserLoginForm) {
         }
     }
 }
+
+export async function getUser() {
+
+    try {
+        const data = await api('/auth/user')
+        const response = userSchema.safeParse(data)
+
+        if (response.success) {
+            return response.data
+        }
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
+export async function requestConfirmationCode(formData: RequestConfirmationCodeForm) {
+
+    try {
+        const url = '/auth/request-code'
+        const { data } = await api.post<string>(url, formData)
+        return data
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error)
+        }
+    }
+}
+
 
 export async function forgotPassword(formData: ForgotPasswordForm) {
 
@@ -95,23 +113,6 @@ export async function updatePasswordWithToken({ formData, token }: { formData: N
         const url = `/auth/update-password/${token}`
         const { data } = await api.post<string>(url, formData)
         return data
-
-    } catch (error) {
-        if (isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.error)
-        }
-    }
-}
-
-export async function getUser() {
-
-    try {
-        const data = await api('/auth/user')
-        const response = userSchema.safeParse(data)
-
-        if (response.success) {
-            return response.data
-        }
 
     } catch (error) {
         if (isAxiosError(error) && error.response) {
