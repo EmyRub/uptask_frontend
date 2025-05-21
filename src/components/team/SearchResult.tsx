@@ -1,7 +1,7 @@
 import { toast } from "react-toastify"
 import { TeamMember } from "@/types/index"
 import { addUserToProject } from "@/api/TeamAPI"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useNavigate, useParams } from "react-router-dom"
 
 type SearchResultProps = {
@@ -10,15 +10,15 @@ type SearchResultProps = {
 }
 
 export default function SearchResult({ user, reset }: SearchResultProps) {
- 
+
     const params = useParams()
     const navigate = useNavigate()
     const projectId = params.projectId!
 
-
+    const queryClient = useQueryClient()
     const { mutate } = useMutation({
         mutationFn: addUserToProject,
-        
+
         onError: (error) => {
             toast.error(error.message)
         },
@@ -26,6 +26,7 @@ export default function SearchResult({ user, reset }: SearchResultProps) {
             toast.success(data)
             reset()
             navigate(location.pathname, { replace: true })
+            queryClient.invalidateQueries({ queryKey: ['projectTeam', projectId] })
         }
     })
 
