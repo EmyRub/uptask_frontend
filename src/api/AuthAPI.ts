@@ -36,7 +36,7 @@ export async function authenticateUser(formData: UserLoginForm) {
 
     try {
         const url = '/auth/login'
-        const { data } = await api.post<string>(url, formData)
+        const { data } = await api.post<string>(url, formData)     
         localStorage.setItem('AUTH_TOKEN', data)
 
         return data
@@ -51,7 +51,7 @@ export async function authenticateUser(formData: UserLoginForm) {
 export async function getUser() {
     //Se manda el token desde el axios header y devuelve el usuario
     try {
-        const data = await api('/auth/user')
+        const { data } = await api('/auth/user')
         const response = userSchema.safeParse(data)
 
         if (response.success) {
