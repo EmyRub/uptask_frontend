@@ -7,11 +7,13 @@ import { fileURLToPath } from 'url'
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss()
+    tailwindcss(),
+    require('@tailwindcss/forms')
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   }
+
 })
