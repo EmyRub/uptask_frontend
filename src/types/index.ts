@@ -4,17 +4,20 @@ import { z } from 'zod'
 const authSchema = z.object({
     name: z.string(),
     email: z.string().email(),
+    current_password: z.string(),
     password: z.string(),
     password_confirmation: z.string(),
     token: z.string()
 })
 type Auth = z.infer<typeof authSchema>
-export type ConfirmToken = Pick<Auth, 'token'>
 
+export type ConfirmToken = Pick<Auth, 'token'>
 export type ForgotPasswordForm = Pick<Auth, 'email'>
+export type CheckPasswordForm = Pick<Auth, 'password'>
 export type UserLoginForm = Pick<Auth, 'email' | 'password'>
 export type RequestConfirmationCodeForm = Pick<Auth, 'email'>
 export type NewPasswordForm = Pick<Auth, 'password' | 'password_confirmation'>
+export type UpdateCurrentUserPasswordForm = Pick<Auth, 'password' | 'password_confirmation' | 'current_password'>
 export type UserRegistrationForm = Pick<Auth, 'name' | 'email' | 'password' | 'password_confirmation'>
 
 /** Users */
@@ -39,28 +42,6 @@ export type Note = z.infer<typeof noteSchema>
 export type NoteFormData = Pick<Note, 'content'>
 
 
-/** Projects */
-export const projectSchema = z.object({
-    _id: z.string(),
-    projectName: z.string(),
-    clientName: z.string(),
-    description: z.string(),
-    manager: z.string(userSchema.pick({ _id: true })),
-})
-
-export const dashboardProjectSchema = z.array(
-    projectSchema.pick({
-        _id: true,
-        projectName: true,
-        clientName: true,
-        description: true,
-        manager: true
-    })
-)
-
-export type Project = z.infer<typeof projectSchema>
-export type ProjectFormData = Pick<Project, 'clientName' | 'projectName' | 'description'>
-
 /**Tasks */
 export const taskStatusSchema = z.enum(["pending", "onHold", "inProgess", "underReview", "completed"])
 export type TaskStatus = z.infer<typeof taskStatusSchema>
@@ -82,8 +63,47 @@ export const taskSchema = z.object({
     createdAt: z.string(),
     updatedAt: z.string()
 })
+
+export const taskProjectSchema = taskSchema.pick({
+    _id: true,
+    name: true,
+    description: true,
+    status: true
+})
+
 export type Task = z.infer<typeof taskSchema>
 export type TaskFormData = Pick<Task, 'name' | 'description'>
+export type TaskProject = z.infer<typeof taskProjectSchema>
+
+
+/** Projects */
+export const projectSchema = z.object({
+    _id: z.string(),
+    projectName: z.string(),
+    clientName: z.string(),
+    description: z.string(),
+    manager: z.string(userSchema.pick({ _id: true })),
+    tasks: z.array(taskProjectSchema),
+    team: z.array(z.string(userSchema.pick({ _id: true })))
+})
+
+export const dashboardProjectSchema = z.array(
+    projectSchema.pick({
+        _id: true,
+        projectName: true,
+        clientName: true,
+        description: true,
+        manager: true
+    })
+)
+export const editProjectSchema = projectSchema.pick({
+    projectName: true,
+    clientName: true,
+    description: true,
+})
+
+export type Project = z.infer<typeof projectSchema>
+export type ProjectFormData = Pick<Project, 'clientName' | 'projectName' | 'description'>
 
 /*******************team********** */
 const teamMemberSchema = userSchema.pick({

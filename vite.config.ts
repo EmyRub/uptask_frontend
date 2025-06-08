@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    require('@tailwindcss/forms')
+   // require('@tailwindcss/forms')
   ],
   resolve: {
     alias: {
